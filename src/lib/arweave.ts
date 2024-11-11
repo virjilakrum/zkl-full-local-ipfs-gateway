@@ -84,8 +84,9 @@
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEZiMTU4ODhGMzA4QzZGNzZkMUVjOTNCRTEzQzZiMEVlOTcxNDJGRjUiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcxMTI0NzE1MTY4MCwibmFtZSI6InprbC1maWxlLXRyYW5zZmVyIn0.RNkY4HHI1wlJ5s5_UZYqIFGx7CIPsV1k4GgkOZsFn5Y'
-//       },
+
+/* deleting for security */
+
 //       body: JSON.stringify(data)
 //     });
 
