@@ -1,9 +1,11 @@
 # ZKL IPFS Gateway & Storage System
 
-Co-authored-by: virjilakrum <contact@zk-lokomotive.xyz>
-Signed-off-by: virjilakrum <baturalp@zk-lokomotive.xyz>
+**Co-authored-by:** virjilakrum <contact@zk-lokomotive.xyz>
 
-Custom IPFS gateway and storage solution for the zk-lokomotive project. This implementation provides a decentralized file storage system with multiple node support and automatic replication.
+**Signed-off-by:** virjilakrum <baturalp@zk-lokomotive.xyz>
+
+* _Custom IPFS gateway and storage solution for the zk-lokomotive project. This implementation provides a decentralized file storage system with multiple node support and automatic replication._
+
 
 ## Prerequisites
 
