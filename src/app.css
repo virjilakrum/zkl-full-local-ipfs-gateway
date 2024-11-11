@@ -1,0 +1,21 @@
+/* Tailwind directives */
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap');
+
+/* Tailwind base styles */
+@import 'tailwindcss/base';
+
+/* Tailwind component styles */
+@import 'tailwindcss/components';
+
+/* Tailwind utility styles */
+@import 'tailwindcss/utilities';
+
+/* Custom styles */
+:root {
+  --primary-bg: #FEFFAF;
+}
+
+body {
+  background-color: var(--primary-bg);
+  font-family: 'League Spartan', sans-serif;
+}

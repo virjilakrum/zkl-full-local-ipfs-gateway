@@ -1,0 +1,55 @@
+# version: '3.8'
+
+# services:
+#   ipfs-node-1:
+#     image: ipfs/kubo:latest
+#     ports:
+#       - "4001:4001"  # swarm
+#       - "5001:5001"  # api
+#       - "8080:8080"  # gateway
+#     volumes:
+#       - ./ipfs/node1:/data/ipfs
+#     environment:
+#       - IPFS_PROFILE=server
+#       - IPFS_PATH=/data/ipfs
+#     restart: always
+
+#   ipfs-node-2:
+#     image: ipfs/kubo:latest
+#     ports:
+#       - "4002:4001"
+#       - "5002:5001"
+#       - "8081:8080"
+#     volumes:
+#       - ./ipfs/node2:/data/ipfs
+#     environment:
+#       - IPFS_PROFILE=server
+#       - IPFS_PATH=/data/ipfs
+#     restart: always
+
+#   ipfs-cluster:
+#     image: ipfs/ipfs-cluster:latest
+#     depends_on:
+#       - ipfs-node-1
+#       - ipfs-node-2
+#     environment:
+#       - CLUSTER_PEERNAME=cluster-node
+#       - CLUSTER_SECRET=your-secret-here
+#       - CLUSTER_IPFSHTTP_NODEMULTIADDRESS=/dns4/ipfs-node-1/tcp/5001
+#     ports:
+#       - "9094:9094"  # HTTP API
+#       - "9095:9095"  # Cluster IPFS proxy
+#       - "9096:9096"  # Cluster swarm
+#     volumes:
+#       - ./ipfs/cluster:/data/ipfs-cluster
+#     restart: always
+
+#   nginx:
+#     image: nginx:alpine
+#     ports:
+#       - "80:80"
+#     volumes:
+#       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#     depends_on:
+#       - ipfs-node-1
+#       - ipfs-node-2
