@@ -1,20 +1,42 @@
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "target": "es2020",
+    "module": "es2020",
+    "lib": ["es2020", "DOM", "DOM.Iterable"],
+    "types": [
+      "svelte",
+      "node",
+      "vite/client"
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
-    "types": ["vite/client", "node"],
-    "baseUrl": ".",
+    "resolveJsonModule": true,
     "paths": {
-      "*": ["src/*"]
-    }
+      "$lib/*": ["src/lib/*"],
+      "@/*": ["src/*"]
+    },
+    "noEmit": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "dist",
+    ".svelte-kit"
+  ]
 }

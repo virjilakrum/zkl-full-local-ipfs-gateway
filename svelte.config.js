@@ -1,9 +1,14 @@
+import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
 
-export default {
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  kit: {
+    adapter: adapter()
+  },
   preprocess: preprocess({
-    typescript: true,
-    sourceMap: true,
-    postcss: true
+    typescript: true
   })
 };
+
+export default config;
