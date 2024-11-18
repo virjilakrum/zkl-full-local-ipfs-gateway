@@ -6,13 +6,16 @@ export default defineConfig({
   plugins: [
     svelte({
       preprocess: preprocess({
-        typescript: true
-      })
+        typescript: true,
+        sourceMap: true,
+        postcss: true
+      }),
+      compilerOptions: {
+        dev: true
+      }
     })
   ],
-  resolve: {
-    alias: {
-      $lib: '/src/lib'
-    }
+  css: {
+    postcss: './postcss.config.js'
   }
 });
