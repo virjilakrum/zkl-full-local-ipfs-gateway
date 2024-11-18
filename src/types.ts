@@ -1,17 +1,6 @@
 // src/types.ts
 import type { PublicKey } from '@solana/web3.js';
-import type { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
-
-export interface FileEntry {
-  id: string;
-  message: string;
-  sender: string;
-  size: number;
-  hash: string;
-  arweaveAddress: string;
-  encryptedAddress: string;
-  receivedAt: Date;
-}
+import type { SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 
 export interface FileUploadResult {
   hash: string;         // IPFS Content ID (CID)
@@ -24,16 +13,35 @@ export interface FileUploadResult {
   metadataCid?: string; // IPFS CID for metadata (optional)
 }
 
+export interface WalletConnectionEvent {
+  status: boolean;
+  wallet: SolflareWalletAdapter | null;
+}
+
+export interface EncryptionKeys {
+  publicKey: Uint8Array;
+  privateKey: Uint8Array;
+}
+
+export interface FileEntry {
+  message: string;
+  sender: string;
+  size: string;
+  hash: string;
+  nonce: string;
+  arweaveAddress?: string;
+  encryptedAddress?: string;
+  decryptedAddress?: string;
+}
+
 export interface Account {
   publicKey: PublicKey;
   displayName: string;
   files: FileEntry[];
   isActive: boolean;
   createdAt: Date;
-  wallet: PhantomWalletAdapter | null;
+  wallet: SolflareWalletAdapter;
+  encryptionKeys: EncryptionKeys;
+  accountType: 'sender' | 'receiver';
 }
 
-export interface WalletConnectionEvent {
-  status: boolean;
-  wallet: PhantomWalletAdapter | null;
-}

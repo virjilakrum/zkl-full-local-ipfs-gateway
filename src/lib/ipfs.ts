@@ -1,20 +1,20 @@
 // src/lib/ipfs.ts
-import { create } from 'ipfs-http-client';
 import type { FileUploadResult } from '../types';
-import type { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
+import type { SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { create } from 'ipfs-http-client';
+
+
 
 const ipfs = create({
   url: 'http://127.0.0.1:5001/api/v0'
 });
 
 export async function uploadToIPFS(
-  file: File, 
-  wallet: PhantomWalletAdapter | null,
+  file: File,
+  wallet: SolflareWalletAdapter | null,
   onProgress?: (progress: number) => void
 ): Promise<FileUploadResult> {
-  if (!wallet?.publicKey) {
-    throw new Error("Wallet not connected");
-  }
 
   try {
     if (onProgress) onProgress(10);
@@ -30,7 +30,7 @@ export async function uploadToIPFS(
       name: file.name,
       type: file.type,
       size: file.size,
-      userAddress: wallet.publicKey.toString(),
+      userAddress: wallet?.publicKey ? wallet.publicKey.toString() : 'defaultAddress', 
       timestamp: new Date().toISOString()
     };
 
@@ -48,11 +48,11 @@ export async function uploadToIPFS(
 
     if (onProgress) onProgress(100);
 
-    // FileUploadResult objesi oluştur
+
     const result: FileUploadResult = {
       hash: fileResult.path,
       fileName: file.name,
-      size: formatFileSize(file.size),
+      size: file.size.toString(),
       publicUrl: `http://localhost:8080/ipfs/${fileResult.path}`,
       backupUrl: `https://ipfs.io/ipfs/${fileResult.path}`,
       fileType: file.type,

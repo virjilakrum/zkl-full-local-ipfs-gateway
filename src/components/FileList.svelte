@@ -1,49 +1,86 @@
 <!--src/components/FileList.svelte-->
 <script lang="ts">
-  import type { FileEntry } from '../types';
+  import type { FileEntry, Account } from '../types';
+  import { zkEncryption } from '../lib/zk/encryption';
   
   export let files: FileEntry[] = [];
-  export let arweaveHash: string = '';
-  export let walletConnected: boolean = false;
+  export let currentAccount: Account;
+  export let otherAccount: Account | null = null;
+
+  async function handleDecrypt(file: FileEntry) {
+    if (!otherAccount || !file.encryptedAddress) return;
+
+    try {
+    
+      const decryptedAddress = await zkEncryption.decrypt(
+        {
+          data: new TextEncoder().encode(file.encryptedAddress as string) as unknown as string,
+        nonce: file.nonce 
+      }, 
+
+      otherAccount.encryptionKeys.publicKey,
+        currentAccount.encryptionKeys.privateKey
+      );
+
+      // Update file with decrypted address
+      const index = files.findIndex(f => f.hash === file.hash);
+      if (index !== -1) {
+        files[index] = {
+          ...file,
+          decryptedAddress
+        };
+        files = [...files];
+      }
+    } catch (error) {
+      console.error('Decryption error:', error);
+    }
+  }
 </script>
 
-<div class="mt-8 border-2 border-dashed border-black p-6 rounded-lg relative">
-  <div class="absolute right-0 top-0 bottom-0 w-8 bg-black opacity-10"></div>
-  
-  <h2 class="text-xl font-bold mb-4">↓ my inbox /\/ {arweaveHash}</h2>
-  
-  {#if walletConnected && files.length > 0}
-    <div class="space-y-4">
-      {#each files as file}
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <div class="flex items-center gap-2">
-              <span class="text-lg">📄</span>
-              <span>{file.message}</span>
-            </div>
-            <div class="flex items-center gap-4">
-              <span>{file.sender}</span>
-              <span>{file.size}</span>
-              <button class="text-xl">↓</button>
-            </div>
+<div class="mt-8 space-y-4">
+  <h2 class="text-xl font-bold">
+    {#if currentAccount.accountType === 'sender'}
+      Files to Send
+    {:else}
+      Received Files
+    {/if}
+  </h2>
+
+  {#if files.length === 0}
+    <p class="text-center opacity-70">No files yet</p>
+  {:else}
+    {#each files as file}
+      <div class="border-2 border-black rounded-lg p-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="font-medium">{file.message}</p>
+            <p class="text-sm opacity-70">{file.size}</p>
           </div>
-          {#if file.arweaveAddress}
-            <div class="text-sm opacity-70">
-              IPFS File Address: <a href={file.arweaveAddress} target="_blank" class="underline">{file.arweaveAddress}</a>
-            </div>
+          
+          {#if currentAccount.accountType === 'receiver' && file.encryptedAddress && !file.decryptedAddress}
+            <button
+              class="px-4 py-2 bg-black text-white rounded hover:bg-black/90"
+              on:click={() => handleDecrypt(file)}
+            >
+              Decrypt
+            </button>
           {/if}
         </div>
-      {/each}
-    </div>
-  {:else if !walletConnected}
-    <div class="text-center text-lg opacity-50">
-      Connect your wallet to view files
-    </div>
-  {:else}
-    <div class="text-center text-lg opacity-50">
-      No files uploaded yet
-    </div>
+
+        {#if file.decryptedAddress}
+          <div class="mt-2 p-2 bg-green-50 rounded">
+            <p class="text-sm">Decrypted IPFS Address:</p>
+            <a
+              href={file.decryptedAddress}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm underline"
+            >
+              {file.decryptedAddress}
+            </a>
+          </div>
+        {/if}
+      </div>
+    {/each}
   {/if}
-  
-  <div class="text-sm text-center mt-4">... continue sending and receiving securely with ZKL</div>
 </div>

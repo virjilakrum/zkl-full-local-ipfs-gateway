@@ -35,27 +35,26 @@ export class ZKEncryption {
     );
 
     return {
-      data: encryptedMessage,
-      nonce: nonce
+      data: this.toBase64(new Uint8Array(encryptedMessage)),
+      nonce: this.toBase64(nonce)
     };
   }
 
   decrypt(encryptedData: EncryptedData, senderPublicKey: Uint8Array, recipientPrivateKey: Uint8Array): string {
-    const decrypted = box.open(
-      encryptedData.data,
-      encryptedData.nonce,
+    const decryptedMessage = box.open(
+      this.fromBase64(encryptedData.data),
+      this.fromBase64(encryptedData.nonce),
       senderPublicKey,
       recipientPrivateKey
     );
 
-    if (!decrypted) {
+    if (!decryptedMessage) {
       throw new Error('Failed to decrypt message');
     }
 
-    return this.decoder.decode(decrypted);
+    return this.decoder.decode(decryptedMessage);
   }
 
-  // Base64 dönüşümleri için yardımcı metodlar
   toBase64(buffer: Uint8Array): string {
     return btoa(String.fromCharCode(...buffer));
   }
