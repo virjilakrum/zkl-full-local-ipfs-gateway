@@ -1,6 +1,11 @@
 // src/types.ts
-import type { PublicKey } from '@solana/web3.js';
-import type { SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
+export interface FileEntry {
+  message: string;
+  sender: string;
+  size: string;
+  hash: string;
+  arweaveAddress?: string;
+}
 
 export interface FileUploadResult {
   hash: string;         // IPFS Content ID (CID)
@@ -12,36 +17,3 @@ export interface FileUploadResult {
   uploadTime: string;   // ISO timestamp
   metadataCid?: string; // IPFS CID for metadata (optional)
 }
-
-export interface WalletConnectionEvent {
-  status: boolean;
-  wallet: SolflareWalletAdapter | null;
-}
-
-export interface EncryptionKeys {
-  publicKey: Uint8Array;
-  privateKey: Uint8Array;
-}
-
-export interface FileEntry {
-  message: string;
-  sender: string;
-  size: string;
-  hash: string;
-  nonce: string;
-  arweaveAddress?: string;
-  encryptedAddress?: string;
-  decryptedAddress?: string;
-}
-
-export interface Account {
-  publicKey: PublicKey;
-  displayName: string;
-  files: FileEntry[];
-  isActive: boolean;
-  createdAt: Date;
-  wallet: SolflareWalletAdapter;
-  encryptionKeys: EncryptionKeys;
-  accountType: 'sender' | 'receiver';
-}
-
