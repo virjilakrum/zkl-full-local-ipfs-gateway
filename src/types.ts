@@ -1,10 +1,16 @@
 // src/types.ts
+import type { PublicKey } from '@solana/web3.js';
+import type { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
+
 export interface FileEntry {
+  id: string;
   message: string;
   sender: string;
-  size: string;
+  size: number;
   hash: string;
-  arweaveAddress?: string;
+  arweaveAddress: string;
+  encryptedAddress: string;
+  receivedAt: Date;
 }
 
 export interface FileUploadResult {
@@ -16,4 +22,18 @@ export interface FileUploadResult {
   fileType: string;     // File MIME type
   uploadTime: string;   // ISO timestamp
   metadataCid?: string; // IPFS CID for metadata (optional)
+}
+
+export interface Account {
+  publicKey: PublicKey;
+  displayName: string;
+  files: FileEntry[];
+  isActive: boolean;
+  createdAt: Date;
+  wallet: PhantomWalletAdapter | null;
+}
+
+export interface WalletConnectionEvent {
+  status: boolean;
+  wallet: PhantomWalletAdapter | null;
 }
